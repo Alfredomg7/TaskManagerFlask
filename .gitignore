@@ -5,7 +5,6 @@ __pycache__/
 
 # Ignore virtual environment
 venv/
-env/
 
 # Ignore database files
 *.db 
