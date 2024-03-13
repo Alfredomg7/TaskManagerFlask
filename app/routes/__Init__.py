@@ -1,0 +1,2 @@
+from .index_routes import register_index_routes
+from .todo_routes import register_todo_routes
