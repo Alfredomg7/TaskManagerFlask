@@ -5,6 +5,7 @@ import os
 app = Flask(__name__)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'ltUN7a9JZcrzQWFmKtU_QA')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, '../instance/test.db')
 db = SQLAlchemy(app)
 
