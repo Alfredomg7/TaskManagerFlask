@@ -16,13 +16,14 @@ def register_todo_routes(app):
         except:
             return 'There was a problem deleting that task'
         
-    @app.route('/update/<int:id>', methods=['GET, POST'])
+    @app.route('/update/<int:id>', methods=['GET', 'POST'])
     def update(id):
         task = Todo.query.get_or_404(id)
         form = TaskForm(content=task.content)
+        form.submit.label.text = 'Update Task'
 
         if request.method == 'POST' and form.validate_on_submit():
-            task_content = form.content.data
+            task.content = form.content.data
             try:
                 db.session.commit()
                 return redirect(url_for('index'))

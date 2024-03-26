@@ -1,15 +1,22 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>My 1st Web App</title>
+<title>Update Task</title>
 {% endblock %}
 
 {% block body %}
-<div class="content">
-    <h1>Update Task</h1>
-    <form action="/update/{{task.id}}" method="POST">
+<div class="container mt-5">
+    <h1 class="text-center mb-3">Update Task</h1>
+    <form action="/update/{{task.id}}" method="POST" class="text-center">
         {{ form.hidden_tag() }}
-        {{ form.content(size=50, id='content', value=task.content) }}
+        <div class="form-group row">
+            <div class="col-12 col-md-8">
+                {{ form.content(class_="form-control mt-3", size=50, id='content', value=task.content) }}
+            </div>
+            <div class="col-12 col-md-4">
+                {{ form.submit(class_="btn mt-3") }}
+            </div>
+        </div>
     </form>
 </div>
 {% endblock %}
