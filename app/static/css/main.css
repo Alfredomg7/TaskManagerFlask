@@ -38,3 +38,35 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #ccee00;
 }
+
+
+/* alert styling */
+@keyframes fadeOut {
+    from {opacity: 1; }
+    to {opacity: 0; }
+}
+
+.alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 0.25rem;
+    padding: 0.75rem 1.25rem;
+    width: auto;
+    min-width: 300px;
+    z-index: 9;
+    animation: fadeOut 2.5s ease-out forwards;
+}
+
+.alert-success {
+    color: #3e5502;
+    background-color: #ccee00;
+    border-color: #b0b200;
+}
+
+.alert-danger {
+    color: #fff;
+    background-color: #ff3d00;
+    border-color:  #e63600;
+}
