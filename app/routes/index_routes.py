@@ -4,25 +4,26 @@ from app.models import Todo
 from app.forms import TaskForm, CompleteForm
 
 def register_index_routes(app):
-    
-    @app.route('/', methods=['POST', 'GET'])
-    def index():
-        task_form = TaskForm()
-        complete_form = CompleteForm()
 
-        if request.method == 'POST' and task_form.validate_on_submit():
-            task_content = task_form.content.data
-            new_task = Todo(content=task_content)
+    @app.route('/')
+    def home():
+        form = TaskForm()
+        return render_template('home.html', form=form)
 
-            try:
-                db.session.add(new_task)
-                db.session.commit()
-                flash('Task added!', 'success')
-                return redirect('/')
-            except:
-                flash('There was an issue adding your task', 'error')
-                return redirect('/')
-        
+    @app.route('/tasks')
+    def tasks():
+        form = CompleteForm()
         tasks = Todo.query.order_by(Todo.date_created).all()
-        return render_template('index.html', tasks=tasks, task_form=task_form, complete_form=complete_form)
-        
+        return render_template('tasks.html', tasks=tasks, form=form, title='All Tasks')
+    
+    @app.route('/pending')
+    def pending():
+        form = CompleteForm()
+        tasks = Todo.query.filter_by(completed=False).order_by(Todo.date_created).all()
+        return render_template('tasks.html', tasks=tasks, form=form, title="Pending Tasks")
+    
+    @app.route('/completed')
+    def completed():
+        form = CompleteForm()
+        tasks = Todo.query.filter_by(completed=True).order_by(Todo.date_created).all()
+        return render_template('tasks.html', tasks=tasks, form=form, title="Pending Tasks")

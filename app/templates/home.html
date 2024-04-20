@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Home - Task Manager</title>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center mb-3">Welcome to Task Manager</h1>
+    <form action="/add-task" method="POST" class="text-center">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+                {{ form.content(class_="form-control mt-3", id="content", placeholder="Task content") }}
+                {{ form.submit(class_="btn mt-3") }}
+        </div>
+    </form>
+</div>
+{% endblock %}

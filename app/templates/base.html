@@ -9,6 +9,24 @@
     {% block head %}{% endblock %}
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Home</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tasks">All Tasks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pending">Pending Tasks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/completed">Completed Tasks</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}    
             {% for category, message in messages %}

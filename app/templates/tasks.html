@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>{{ title }}</title>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    {% if tasks|length < 1 %}
+    <h2 class="text-center mb-3">There are no tasks</h2>
+    {% else %}
+    <div class="table-responsive">
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Added</th>
+                    <th>Complete</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <td class="{{ 'task-completed' if task.completed else '' }}" >{{ task.content }}</td>
+                    <td class="{{ 'task-completed' if task.completed else '' }}"> {{ task.date_created.date() }}</td>
+                    <td class="{{ 'task-completed' if task.completed else '' }}">
+                        <form action="{{ url_for('complete', id=task.id, redirect_view=request.path) }}" method="POST">
+                            {{ form.hidden_tag() }}
+                            {{ form.completed(onchange="this.form.submit()", checked=task.completed)}}
+                        </form>
+                    </td>
+                    <td class="{{ 'task-completed' if task.completed else '' }}">
+                        <a href="/delete/{{task.id}}">Delete</a>
+                        <br>
+                        <a href="/update/{{task.id}}">Update</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

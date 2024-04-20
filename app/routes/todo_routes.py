@@ -5,6 +5,22 @@ from app.forms import TaskForm
 
 def register_todo_routes(app):
 
+    @app.route('/add-task', methods=['POST'])
+    def add():
+        form = TaskForm()
+        if request.method == 'POST' and form.validate_on_submit():
+            task_content = form.content.data
+            new_task = Todo(content=task_content)
+
+            try:
+                db.session.add(new_task)
+                db.session.commit()
+                flash('Task added!', 'success')
+                return redirect('/')
+            except:
+                flash('There was an issue adding your task', 'error')
+                return redirect(url_for('home'))
+
     @app.route('/delete/<int:id>')
     def delete(id):
         task_to_delete = Todo.query.get_or_404(id)
@@ -13,10 +29,10 @@ def register_todo_routes(app):
             db.session.delete(task_to_delete)
             db.session.commit()
             flash('Task deleted!', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('home'))
         except:
             flash('There was a problem deleting that task', 'error')
-            return redirect(url_for('index'))
+            return redirect(url_for('home'))
         
     @app.route('/update/<int:id>', methods=['GET', 'POST'])
     def update(id):
@@ -29,10 +45,10 @@ def register_todo_routes(app):
             try:
                 db.session.commit()
                 flash('Task updated!', 'success')
-                return redirect(url_for('index'))
+                return redirect(url_for('home'))
             except:
                 flash('There was an issue updating your task', 'error')
-                return redirect(url_for('index'))
+                return redirect(url_for('home'))
         
         return render_template('update.html', task=task, form=form)
     
@@ -41,4 +57,5 @@ def register_todo_routes(app):
         task = Todo.query.get_or_404(id)
         task.completed = not task.completed
         db.session.commit()
-        return redirect(url_for('index'))
+        redirect_view = request.args.get('redirect_view', '/')
+        return redirect(redirect_view)
