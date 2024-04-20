@@ -16,15 +16,22 @@
                     <tr>
                         <th>Task</th>
                         <th>Added</th>
+                        <th>Complete</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for task in tasks %}
                     <tr>
-                        <td>{{ task.content }}</td>
-                        <td> {{ task.date_created.date() }}</td>
-                        <td>
+                        <td  class="{{ 'task-completed' if task.completed else '' }}" >{{ task.content }}</td>
+                        <td  class="{{ 'task-completed' if task.completed else '' }}"> {{ task.date_created.date() }}</td>
+                        <td  class="{{ 'task-completed' if task.completed else '' }}">
+                            <form action="{{ url_for('complete', id=task.id) }}" method="POST">
+                                {{ complete_form.hidden_tag() }}
+                                {{ complete_form.completed(onchange="this.form.submit()", checked=task.completed)}}
+                            </form>
+                        </td>
+                        <td  class="{{ 'task-completed' if task.completed else '' }}">
                             <a href="/delete/{{task.id}}">Delete</a>
                             <br>
                             <a href="/update/{{task.id}}">Update</a>
@@ -36,13 +43,13 @@
         </div>
     {% endif %}
     <form action="/" method="POST" class="text-center">
-        {{ form.hidden_tag() }}
+        {{ task_form.hidden_tag() }}
         <div class="form-group row">
             <div class="col-12 col-md-8">
-                {{ form.content(class_="form-control mt-3", id="content", placeholder="Task content") }}
+                {{ task_form.content(class_="form-control mt-3", id="content", placeholder="Task content") }}
             </div>
             <div class="col-12 col-md-4">
-                {{ form.submit(class_="btn mt-3") }}
+                {{ task_form.submit(class_="btn mt-3") }}
             </div>
         </div>
     </form>

@@ -35,3 +35,10 @@ def register_todo_routes(app):
                 return redirect(url_for('index'))
         
         return render_template('update.html', task=task, form=form)
+    
+    @app.route('/complete/<int:id>', methods=['POST'])
+    def complete(id):
+        task = Todo.query.get_or_404(id)
+        task.completed = not task.completed
+        db.session.commit()
+        return redirect(url_for('index'))
