@@ -9,9 +9,10 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'ltUN7a9JZcrzQWFmKtU_QA'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, '../instance/test.db')
 db = SQLAlchemy(app)
 
-from app.routes import register_index_routes, register_todo_routes
+from app.routes import register_index_routes, register_todo_routes, register_error_routes
 register_index_routes(app)
 register_todo_routes(app)
+register_error_routes(app)
 
 from app.models import Todo
 with app.app_context():

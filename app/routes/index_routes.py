@@ -27,3 +27,7 @@ def register_index_routes(app):
         form = CompleteForm()
         tasks = Todo.query.filter_by(completed=True).order_by(Todo.date_created).all()
         return render_template('tasks.html', tasks=tasks, form=form, title="Pending Tasks")
+    
+    @app.route('/about')
+    def about():
+        return render_template('about.html')

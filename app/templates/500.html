@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>505 - Internal Server Error</title>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center">500 - Internal Server Error</h1>
+    <p class="fs-5 text-start">
+        Uh-oh! Something went wrong on our end. Our technical team is already on it, so you should be back on track soon.
+    </p>
+    <p class="fs-5 text-start">
+        In the meantime, you can:
+        <ul class="list-group">
+            <li class="list-group-item"><a href="{{ url_for('home') }}">Return to the home page</a></li>
+            <li class="list-group-item"><a href="javascript:history.back()">Go back to the previous page</a></li>
+            <li class="list-group-item text-light">Try refreshing the page in a few minutes</li>
+        </ul>
+    </p>
+</div>
+{% endblock %}

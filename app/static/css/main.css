@@ -3,7 +3,7 @@ body {
     color: #e0e0e0;
 }
 
-h1, h2 {
+h1, h2, .card-title {
     color: #DFFF00;
 }
 
@@ -11,7 +11,7 @@ th {
     color: #DFFF00 !important;
 }
 
-td {
+td, li, .card-body {
     background: #3a3a3a !important;
 }
 
