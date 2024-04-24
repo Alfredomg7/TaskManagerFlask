@@ -33,9 +33,9 @@
                         </form>
                     </td>
                     <td class="{{ 'task-completed' if task.completed else '' }}">
-                        <a href="/delete/{{task.id}}">Delete</a>
+                        <a class="link" href="/delete/{{task.id}}">Delete</a>
                         <br>
-                        <a href="/update/{{task.id}}">Update</a>
+                        <a class="link" href="/update/{{task.id}}">Update</a>
                     </td>
                 </tr>
             {% endfor %}

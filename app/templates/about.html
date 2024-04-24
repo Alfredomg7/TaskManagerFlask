@@ -7,19 +7,37 @@
 {% block body %}
 <div class="container mt-5">
     <h1 class="text-center mb-4">About this App</h1>
-    <div class="card-body text-light mb-3">
-        <h5 class="card-title">Todo App with Flask</h5>
-        <p class="card-text ">
-            This is a basic todo application built with Flask, Bootstrap, and some JavaScript. 
-            It allows users to add, update, complete and delete tasks.    
-        </p>
+    <div class="card md-card text-white mb-4">
+        <div class="row g-0">
+            <div class="col-md-4 d-flex align-items-stretch">
+                <img src="{{ url_for('static', filename='img/flask.svg') }}" 
+                        class="img-fluid object-fit-cover"
+                        alt="Flask Logo">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Todo App with Flask</h5>
+                    <p class="card-text">This is a basic todo application built with Flask, Bootstrap, and some JavaScript. It allows users to add, update, complete, and delete tasks.</p>
+                    <a class="btn mt-3" href='https://github.com/Alfredomg7/TaskMaster-Flask' target="_blank" rel="noopener noreferrer">Source Code</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="card-body text-light">
-        <h5 class="card-title">About the Author</h5>
-        <p class="card-text">
-            I am Alfredo Munoz from Mexico, a backend developer specialize in Python, SQL and data analysis, 
-            with a passion for creating user-friendly data-driven applications.
-        </p>
+    <div class="card md-card text-white mb-5">
+        <div class="row g-0">
+            <div class="col-md-4 d-flex align-items-stretch">
+                <img src="{{ url_for('static', filename='img/profile.jpg') }}" 
+                     class="img-fluid object-fit-cover"
+                     alt="Alfredo Profile Photo">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body text-center">
+                    <h5 class="card-title">About the Author</h5>
+                    <p class="card-text">Alfredo Munoz is a data analyst and backend developer based in Mexico. He specializes in Python, SQL, JavaScript, Flask, and Bootstrap.</p>
+                    <a class="btn mt-3" href="https://github.com/Alfredomg7"target="_blank" rel="noopener noreferrer">GitHub Projects</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

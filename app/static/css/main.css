@@ -11,8 +11,8 @@ th {
     color: #DFFF00 !important;
 }
 
-td, li, .card-body {
-    background: #3a3a3a !important;
+td, li, .card {
+    background: #3a3a3a;
 }
 
 .task-completed {
@@ -20,30 +20,38 @@ td, li, .card-body {
     text-decoration: line-through;
 }
 
-a {
+.link {
     color: #DFFF00;
     text-decoration: none;
 }
 
-a:hover {
+.link:hover {
     color: #ccee00;
     text-decoration: underline;
 }
 
-input[type="text"] {
+input[type="text"], input[type="Date"] {
     background-color: #262626 !important;
     color: #e0e0e0 !important;
 }
 
-input[type="submit"] {
-    background-color: #DFFF00; 
+.btn {
+    background-color: #DFFF00;
     color: #333 !important;
 }
 
-input[type="submit"]:hover {
+.btn:hover {
     background-color: #ccee00;
 }
 
+.card {
+    height: 25vh;
+}
+
+.img-fluid {
+    width: 30vh;
+    height: 25vh;
+}
 
 /* alert styling */
 @keyframes fadeOut {
