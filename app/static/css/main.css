@@ -31,18 +31,18 @@ td, li, .card {
     text-decoration: underline;
 }
 
-input[type="text"], input[type="Date"] {
+input, select {
     background-color: #262626 !important;
     color: #e0e0e0 !important;
 }
 
 .btn {
-    background-color: #DFFF00;
+    background-color: #DFFF00 !important;
     color: #333 !important;
 }
 
 .btn:hover {
-    background-color: #ccee00;
+    background-color: #ccee00 !important;
 }
 
 .card {
@@ -79,7 +79,7 @@ input[type="text"], input[type="Date"] {
     border-color: #b0b200;
 }
 
-.alert-danger {
+.alert-error {
     color: #fff;
     background-color: #ff3d00;
     border-color:  #e63600;
