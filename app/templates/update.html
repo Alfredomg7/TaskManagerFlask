@@ -10,12 +10,15 @@
     <form action="/update/{{task.id}}" method="POST" class="text-center">
         {{ form.hidden_tag() }}
         <div class="form-group row">
-            <div class="col-12 col-md-8">
+            <div class="col-12 col-md-9">
                 {{ form.content(class_="form-control mt-3", size=50, id='content', value=task.content) }}
             </div>
-            <div class="col-12 col-md-4">
-                {{ form.submit(class_="btn mt-3") }}
+            <div class="col-12 col-md-3">
+                {{ form.due_date(class_="form-control mt-3", id="due_date", placeholder="Due date(YYYY--MM-DD)") }}
             </div>
+        </div>
+        <div class="form-group">
+            {{ form.submit(class_="btn mt-3") }}
         </div>
     </form>
 </div>

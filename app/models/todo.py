@@ -6,6 +6,7 @@ class Todo(db.Model):
     content = db.Column(db.String(200), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.now)
     completed = db.Column(db.Boolean, default=False)
+    due_date = db.Column(db.Date, nullable=False)
 
     # Representation method for the model
     def __repr__(self):

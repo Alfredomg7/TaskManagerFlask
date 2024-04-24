@@ -9,16 +9,17 @@ def register_todo_routes(app):
     def add():
         form = TaskForm()
         if request.method == 'POST' and form.validate_on_submit():
-            task_content = form.content.data
-            new_task = Todo(content=task_content)
-
+            new_task = Todo(
+                content= form.content.data,
+                due_date = form.due_date.data
+                )
             try:
                 db.session.add(new_task)
                 db.session.commit()
                 flash('Task added!', 'success')
                 return redirect('/')
-            except:
-                flash('There was an issue adding your task', 'error')
+            except Exception as e:
+                flash(f'There was an issue adding your task: {str(e)}', 'error')
                 return redirect(url_for('home'))
 
     @app.route('/delete/<int:id>')
@@ -30,7 +31,7 @@ def register_todo_routes(app):
             db.session.commit()
             flash('Task deleted!', 'success')
             return redirect(url_for('home'))
-        except:
+        except Exception as e:
             flash('There was a problem deleting that task', 'error')
             return redirect(url_for('home'))
         
@@ -42,6 +43,7 @@ def register_todo_routes(app):
 
         if request.method == 'POST' and form.validate_on_submit():
             task.content = form.content.data
+            task.due_date = form.due_date.data
             try:
                 db.session.commit()
                 flash('Task updated!', 'success')

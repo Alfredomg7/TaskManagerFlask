@@ -15,6 +15,7 @@
                 <tr>
                     <th>Task</th>
                     <th>Added</th>
+                    <th>Due Date</th>
                     <th>Complete</th>
                     <th>Actions</th>
                 </tr>
@@ -22,8 +23,9 @@
             <tbody>
             {% for task in tasks %}
                 <tr>
-                    <td class="{{ 'task-completed' if task.completed else '' }}" >{{ task.content }}</td>
+                    <td class="{{ 'task-completed' if task.completed else '' }}"> {{ task.content }}</td>
                     <td class="{{ 'task-completed' if task.completed else '' }}"> {{ task.date_created.date() }}</td>
+                    <td class="{{ 'task-completed' if task.completed else '' }}"> {{ task.due_date }}</td>
                     <td class="{{ 'task-completed' if task.completed else '' }}">
                         <form action="{{ url_for('complete', id=task.id, redirect_view=request.path) }}" method="POST">
                             {{ form.hidden_tag() }}
