@@ -5,7 +5,7 @@ from app.forms import TaskForm
 
 def register_todo_routes(app):
 
-    @app.route('/add-task', methods=['POST'])
+    @app.route('/add', methods=['GET', 'POST'])
     def add():
         form = TaskForm()
         if request.method == 'POST' and form.validate_on_submit():
@@ -17,11 +17,12 @@ def register_todo_routes(app):
                 db.session.add(new_task)
                 db.session.commit()
                 flash('Task added!', 'success')
-                return redirect('/')
             except Exception as e:
                 flash(f'There was an issue adding your task: {str(e)}', 'error')
-                return redirect(url_for('home'))
-
+            redirect_view = request.form.get('redirect_view', '/')
+            return redirect(redirect_view)
+        return render_template("add_task.html", form=form, title="Add Task")
+    
     @app.route('/delete/<int:id>')
     def delete(id):
         task_to_delete = Todo.query.get_or_404(id)

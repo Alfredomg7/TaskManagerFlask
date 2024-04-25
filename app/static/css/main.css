@@ -7,7 +7,12 @@ h1, h2, th, .card-title {
     color: #DFFF00 !important;
 }
 
-td, li, .card {
+.table-responsive {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.item {
     background: #3a3a3a !important;
     border-color: #262626 !important;
 }

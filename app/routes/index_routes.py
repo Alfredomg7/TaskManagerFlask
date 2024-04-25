@@ -8,7 +8,7 @@ def register_index_routes(app):
     @app.route('/')
     def home():
         form = TaskForm()
-        return render_template('home.html', form=form)
+        return render_template('home.html', form=form, title="Home")
 
     @app.route('/tasks')
     def tasks():

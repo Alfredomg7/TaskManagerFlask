@@ -9,14 +9,15 @@
     {% if tasks|length < 1 %}
     <h2 class="text-center mb-3">There are no {{ 'tasks' if title == 'All Tasks' else title.lower() }}</h2>
     {% else %}
-    <div class="row mb-2">
-        <div class="col-6 col-md-3">
+    <div class="row mb-3">
+        <div class="col-12 col-md-3 text-md-center mb-2">
+            <a class="btn btn-primary w-100" href="{{ url_for('add') }}">Add New Task</a>
+        </div>
+        <div class="col-12 col-md-6 text-md-end mb-2">
             <label for="task-filter-dropdown" class="fw-bold">Filter by Due Date</label>
         </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col-6 col-md-3">
-            <select id="task-filter-dropdown" class="form-select">
+        <div class="col-12 col-md-3 text-md-start mb-3">
+            <select id="task-filter-dropdown" class="form-select w-100">
                 <option value="all">All</option>
                 <option value="today">Today</option>
                 <option value="this-week">This Week</option>
@@ -26,7 +27,7 @@
             </select>
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive mb-2">
         <table id="tasks-table" class="table table-dark">
             <thead>
                 <tr>
@@ -40,16 +41,16 @@
             <tbody>
             {% for task in tasks %}
                 <tr>
-                    <td class="{{ 'task-completed' if task.completed and title == 'All Tasks' else '' }}"> {{ task.content }}</td>
-                    <td class="{{ 'task-completed' if task.completed and title == 'All Tasks' else '' }}"> {{ task.date_created.date() }}</td>
-                    <td class="{{ 'task-completed' if task.completed and title == 'All Tasks' else '' }}"> {{ task.due_date }}</td>
-                    <td class="{{ 'task-completed' if task.completed and title == 'All Tasks' else '' }}">
+                    <td class="item {{ 'task-completed' if task.completed and title == 'All Tasks' else '' }}"> {{ task.content }}</td>
+                    <td class="item {{ 'task-completed' if task.completed and title == 'All Tasks' else '' }}"> {{ task.date_created.date() }}</td>
+                    <td class="item {{ 'task-completed' if task.completed and title == 'All Tasks' else '' }}"> {{ task.due_date }}</td>
+                    <td class="item {{ 'task-completed' if task.completed and title == 'All Tasks' else '' }}">
                         <form action="{{ url_for('complete', id=task.id, redirect_view=request.path) }}" method="POST">
                             {{ form.hidden_tag() }}
                             {{ form.completed(onchange="this.form.submit()", checked=task.completed)}}
                         </form>
                     </td>
-                    <td class="{{ 'task-completed' if task.completed and title == 'All Tasks' else '' }}">
+                    <td class="item {{ 'task-completed' if task.completed and title == 'All Tasks' else '' }}">
                         <a class="link" href="/delete/{{task.id}}">Delete</a>
                         <br>
                         <a class="link" href="/update/{{task.id}}">Update</a>
