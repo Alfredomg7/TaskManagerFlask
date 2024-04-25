@@ -3,11 +3,7 @@ body {
     color: #e0e0e0;
 }
 
-h1, h2, .card-title {
-    color: #DFFF00;
-}
-
-th {
+h1, h2, th, .card-title {
     color: #DFFF00 !important;
 }
 
@@ -52,6 +48,12 @@ input, select {
 .img-fluid {
     width: 30vh;
     height: 25vh;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
 
 /* alert styling */
