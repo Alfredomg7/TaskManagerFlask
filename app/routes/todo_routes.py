@@ -25,16 +25,15 @@ def register_todo_routes(app):
     @app.route('/delete/<int:id>')
     def delete(id):
         task_to_delete = Todo.query.get_or_404(id)
-
         try:
             db.session.delete(task_to_delete)
             db.session.commit()
             flash('Task deleted!', 'success')
-            return redirect(url_for('home'))
         except Exception as e:
             flash('There was a problem deleting that task', 'error')
-            return redirect(url_for('home'))
-        
+        redirect_view = request.referrer if request.referrer else '/'
+        return redirect(redirect_view)
+    
     @app.route('/update/<int:id>', methods=['GET', 'POST'])
     def update(id):
         task = Todo.query.get_or_404(id)
@@ -47,11 +46,10 @@ def register_todo_routes(app):
             try:
                 db.session.commit()
                 flash('Task updated!', 'success')
-                return redirect(url_for('home'))
             except:
                 flash('There was an issue updating your task', 'error')
-                return redirect(url_for('home'))
-        
+            redirect_view = request.form.get('redirect_view', '/')
+            return redirect(redirect_view)        
         return render_template('update.html', task=task, form=form)
     
     @app.route('/complete/<int:id>', methods=['POST'])
