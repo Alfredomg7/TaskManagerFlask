@@ -7,7 +7,7 @@ window.addEventListener('load', () => {
                 if (alert.style.opacity === '0') {
                     alert.remove();
                 }
-            }, 2500);
+            }, 7000);
         });
     } catch (error) {
         console.log("No alerts messages");

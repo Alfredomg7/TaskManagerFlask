@@ -7,7 +7,7 @@ class Todo(db.Model):
     date_created = db.Column(db.DateTime, default=datetime.now)
     completed = db.Column(db.Boolean, default=False)
     due_date = db.Column(db.Date, nullable=False)
-
-    # Representation method for the model
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    
     def __repr__(self):
         return f'<Task {self.id} - {"Completed" if self.completed else "Pending"}>'

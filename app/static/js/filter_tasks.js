@@ -45,7 +45,7 @@ function filterTasks() {
                         break;
 
                     case 'upcoming':
-                        showRow = (dueDate >= today);
+                        showRow = (dueDate > today);
                         break;
 
                     case 'expired':
@@ -57,7 +57,7 @@ function filterTasks() {
             }
         } 
     } catch (error) {
-            console.log("No dropdown filter");  // Log the error for debugging
+            console.log("No dropdown filter");
         }
 }
 document.getElementById('task-filter-dropdown').addEventListener('change', filterTasks);

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Task Manager - Profile</title>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center">{{ username }} Profile</h1>
+    <p class="text-center">Email: {{email }}</p>
+    <div class="row justify-content-center mt-4">
+        <div class="col-12 col-md-4 text-center">
+            <h3>Expired Tasks</h3>
+            <a href="{{ url_for('pending', filter='expired') }}" class="fs-5 fw-bold link">{{ expired_tasks }}</a>
+        </div>
+        <div class="col-12 col-md-4 text-center">
+            <h3>Due Today</h3>
+            <a href="{{ url_for('pending', filter='today') }}" class="fs-5 fw-bold link">{{ due_today_tasks }}</a>
+        </div>
+        <div class="col-12 col-md-4 text-center">
+            <h3>Upcoming Tasks</h3>
+            <a href="{{ url_for('pending', filter='upcoming') }}"class="fs-5 fw-bold link">{{ upcoming_tasks }}</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

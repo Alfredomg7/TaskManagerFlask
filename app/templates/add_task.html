@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Add Task</title>
+<title>Task Manager - Add Task</title>
 {% endblock %}
 
 {% block body %}
@@ -15,11 +15,11 @@
                 {{ form.content(class_="form-control mt-3", id="content", placeholder="Task content") }}
             </div>
             <div class="col-12 col-md-3">
-                {{ form.due_date(class_="form-control mt-3", id="due_date", placeholder="Due date(YYYY--MM-DD)") }}
+                {{ form.due_date(class_="form-control mt-3", id="due_date", placeholder="Due date(YYYY--MM-DD)", value=today) }}
             </div>
         </div>
         <div class="form-group">
-            {{ form.submit(class_="btn mt-3") }}
+            {{ form.submit(class_="btn custom-btn mt-3 fw-bold") }}
         </div>
     </form>
 </div>

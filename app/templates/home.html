@@ -1,22 +1,37 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Home</title>
+<title>Task Manager - Home</title>
 {% endblock %}
 
 {% block body %}
 <div class="container mt-5">
+    {% if current_user.is_authenticated %}
+        <h1 class="text-center mb-3">Welcome {{ current_user.username }}</h1>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-3">
+            <a class="btn custom-btn w-100 mt-3 fw-bold" href="{{ url_for('add') }}">Add New Task</a>
+            </div>
+            <div class="col-12 col-md-3">
+            <a class="btn custom-btn w-100 mt-3 fw-bold" href="{{ url_for('tasks')}}">All Tasks</a>
+            </div>
+            <div class="col-12 col-md-3">
+            <a class="btn custom-btn w-100 mt-3 fw-bold" href="{{ url_for('pending') }}">Pending Tasks</a>
+            </div>
+        </div>
+    {% else %}
     <h1 class="text-center mb-3">Welcome to Task Manager</h1>
     <div class="row justify-content-center">
         <div class="col-12 col-md-3">
-        <a class="btn w-100 mt-3" href="{{ url_for('add') }}">Add New Task</a>
+        <a class="btn custom-btn w-100 mt-3 fw-bold" href="{{ url_for('login') }}">Log In</a>
+        </div>
+        <div class="col-12 col-md-3 fw-bold">
+        <a class="btn custom-btn w-100 mt-3 fw-bold" href="{{ url_for('signup')}}">Sign Up</a>
         </div>
         <div class="col-12 col-md-3">
-        <a class="btn w-100 mt-3" href="{{ url_for('tasks')}}">See All Tasks</a>
-        </div>
-        <div class="col-12 col-md-3">
-        <a class="btn w-100 mt-3" href="{{ url_for('pending') }}">See Pending Task</a>
+        <a class="btn custom-btn w-100 mt-3 fw-bold" href="{{ url_for('about') }}">About</a>
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}

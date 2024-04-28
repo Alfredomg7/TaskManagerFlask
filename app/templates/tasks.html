@@ -8,10 +8,13 @@
 <div class="container mt-5">
     {% if tasks|length < 1 %}
     <h2 class="text-center mb-3">There are no {{ 'tasks' if title == 'All Tasks' else title.lower() }}</h2>
+    <div class="text-center">
+        <a class="btn" href="{{ url_for('add') }}">Add New Task</a>
+    </div>
     {% else %}
     <div class="row mb-3">
-        <div class="col-12 col-md-3 text-md-center mb-2">
-            <a class="btn btn-primary w-100" href="{{ url_for('add') }}">Add New Task</a>
+        <div class="col-12 col-md-3 text-md-center mb-3">
+            <a class="btn custom-btn w-100 mt-3 fw-bold" href="{{ url_for('add') }}">Add New Task</a>
         </div>
         <div class="col-12 col-md-6 text-md-end mb-2">
             <label for="task-filter-dropdown" class="fw-bold">Filter by Due Date</label>
