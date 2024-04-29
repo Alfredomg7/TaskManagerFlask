@@ -7,7 +7,7 @@
 {% block body %}
 <div class="container mt-5">
     <h1 class="text-center mb-3">Update Task</h1>
-    <form action="/update/{{task.id}}" method="POST" class="text-center">
+    <form action="{{ url_for('update', id=task.id)}}" method="POST" class="text-center">
         {{ form.hidden_tag() }}
         <input type="hidden" name="redirect_view" value="{{ request.referrer }}">
         <div class="form-group row">

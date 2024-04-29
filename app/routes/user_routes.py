@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash
 from datetime import datetime
 from app import db
 from app.models import User, Todo
-from app.forms import LoginForm, SignupForm
+from app.forms import LoginForm, SignupForm, EditProfileForm
 
 def register_user_routes(app):
     
@@ -25,7 +25,7 @@ def register_user_routes(app):
                 next_page = request.args.get('next')
                 return redirect(next_page or url_for('home'))
             except:
-                flash(f'There was an issue creating your account', 'error')
+                flash('There was an issue creating your account', 'error')
                 return render_template('signup.html', form=form)
         return render_template('signup.html', form=form)
     
@@ -60,12 +60,27 @@ def register_user_routes(app):
         upcoming_tasks = Todo.query.filter_by(user_id=current_user.id, completed=False).filter(Todo.due_date > today).count()
 
         return render_template(
-            'profile.html', username=current_user.username, email=current_user.email,
-            expired_tasks=expired_tasks, due_today_tasks=due_today_tasks, 
-            upcoming_tasks=upcoming_tasks, title="Task Manager - Profile"
-        )
+            'profile.html', username=current_user.username,
+            email=current_user.email, expired_tasks=expired_tasks,
+            due_today_tasks=due_today_tasks, upcoming_tasks=upcoming_tasks)
     
-    @app.route('/edit-profile')
+    @app.route('/edit-profile', methods=['GET', 'POST'])
     @login_required
     def edit_profile():
-        return render_template("home")
+        form = EditProfileForm(obj=current_user)
+        
+        if form.validate_on_submit():
+            if form.validate_password(form.password):
+                current_user.username = form.username.data
+                current_user.email = form.email.data
+
+                try:
+                    db.session.commit()
+                    flash('Profile updated succesfully!', 'success')
+                    return redirect(url_for("profile"))
+                except:
+                    flash('There was an issue updating profile', 'error')
+                    return render_template('edit_profile.html', form=form)
+            else:
+                flash('Incorrect password. Plese try again.', 'error')
+        return render_template('edit_profile.html', form=form) 
