@@ -1,20 +1,24 @@
 from flask import Flask
+from config import Config
+from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from datetime import timedelta
+from flask_mail import Mail
 import os
 
 app = Flask(__name__)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'ltUN7a9JZcrzQWFmKtU_QA')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, '../instance/test.db')
-app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=7)
+load_dotenv(os.path.join(basedir, '.env'))
+app.config.from_object(Config)
+
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+mail = Mail(app)
 
 from app.routes import register_index_routes, register_todo_routes, register_user_routes, register_error_routes
 register_index_routes(app)

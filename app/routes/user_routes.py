@@ -1,10 +1,12 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import current_app, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash
+from flask_mail import Message
+from threading import Thread
 from datetime import datetime
-from app import db
+from app import db, mail
 from app.models import User, Todo
-from app.forms import LoginForm, SignupForm, EditProfileForm
+from app.forms import LoginForm, SignupForm, EditProfileForm, ResetPasswordRequestForm, ResetPasswordForm
 
 def register_user_routes(app):
     
@@ -84,3 +86,45 @@ def register_user_routes(app):
             else:
                 flash('Incorrect password. Plese try again.', 'error')
         return render_template('edit_profile.html', form=form) 
+    
+    @app.route('/reset_password_request', methods=['GET', 'POST'])
+    def reset_password_request():
+        if current_user.is_authenticated:
+            return redirect(url_for('home'))
+        form = ResetPasswordRequestForm()
+        if form.validate_on_submit():
+            user = User.query.filter_by(email=form.email.data).first()
+            if user:
+                send_password_reset_email(user)
+            flash('Check your email for the instructions to reset your password', 'info')
+            return redirect(url_for('login'))
+        return render_template('reset_password_request.html', form=form)
+    
+    @app.route('/reset_password/<token>', methods=['GET', 'POST'])
+    def reset_password(token): 
+        if current_user.is_authenticated:
+            flash('CURRENT USER FAILS!', 'error')
+            return redirect(url_for('home'))
+        user = User.verify_reset_token(token)
+        if not user:
+            flash('This is an invalid or expired token', 'error')
+            return redirect(url_for('reset_password_request'))
+        form = ResetPasswordForm()
+        if form.validate_on_submit():
+            user.set_password(form.password.data)
+            db.session.commit()
+            flash('Your password has been reset', 'success')
+            return redirect(url_for('login'))
+        return render_template('reset_password.html', form=form, token=token)
+
+    def send_async_email(app, msg):
+        with app.app_context():
+            mail.send(msg)
+
+    def send_password_reset_email(user):
+        token = user.generate_reset_token()
+        msg = Message('Reset Your Password',
+                      sender=app.config['MAIL_USERNAME'],
+                      recipients=[user.email])
+        msg.html = render_template('password_reset_email.html', token=token, username=user.username)
+        Thread(target=send_async_email, args=(current_app._get_current_object(), msg)).start()
