@@ -7,6 +7,7 @@ from datetime import datetime
 from app import db, mail
 from app.models import User, Todo
 from app.forms import LoginForm, SignupForm, EditProfileForm, ResetPasswordRequestForm, ResetPasswordForm
+from utils.email_utils import send_password_reset_email, send_email_confirmation
 
 def register_user_routes(app):
     
@@ -15,22 +16,35 @@ def register_user_routes(app):
         form = SignupForm()
         if form.validate_on_submit():
             hashed_password = generate_password_hash(form.password.data, method='pbkdf2:sha256')
-            new_user = User(
-                username=form.username.data,
-                email=form.email.data, 
-                password_hash=hashed_password,
-                )
+            new_user = User(username=form.username.data, email=form.email.data, password_hash=hashed_password)
             try:
                 db.session.add(new_user)
+                send_email_confirmation(new_user)
                 db.session.commit()
-                flash('Your account has been created! You can now log in.', 'success')
+                flash('Your account has been created! Please check your email to confirm your email address.', 'success')
                 next_page = request.args.get('next')
                 return redirect(next_page or url_for('home'))
             except:
-                flash('There was an issue creating your account', 'error')
+                db.session.rollback()
+                flash(f'There was an issue creating your account', 'error')
                 return render_template('signup.html', form=form)
         return render_template('signup.html', form=form)
     
+    @app.route('/confirm-email/<token>')
+    def confirm_email(token):
+        user = User.verify_confirmation_token(token)
+        if not user:
+            flash('The confirmation link is invalid or has expired.', 'error')
+            return redirect(url_for('home'))
+        if user.email_verified:
+            flash('Account already confirmed. Please log in.', 'info')
+        else:
+            user.email_verified = True
+            db.session.commit()
+            flash('Your email has been confirmed, thank you!', 'success')
+            login_user(user)
+        return redirect(url_for('login'))
+
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         form = LoginForm()
@@ -72,15 +86,17 @@ def register_user_routes(app):
         form = EditProfileForm(obj=current_user)
         
         if form.validate_on_submit():
-            if form.validate_password(form.password):
+            if current_user.check_password(form.current_password.data):
                 current_user.username = form.username.data
                 current_user.email = form.email.data
-
+                if form.new_password.data:
+                    current_user.password_hash = generate_password_hash(form.new_password.data)
                 try:
                     db.session.commit()
                     flash('Profile updated succesfully!', 'success')
                     return redirect(url_for("profile"))
                 except:
+                    db.session.rollback()
                     flash('There was an issue updating profile', 'error')
                     return render_template('edit_profile.html', form=form)
             else:
@@ -103,7 +119,6 @@ def register_user_routes(app):
     @app.route('/reset_password/<token>', methods=['GET', 'POST'])
     def reset_password(token): 
         if current_user.is_authenticated:
-            flash('CURRENT USER FAILS!', 'error')
             return redirect(url_for('home'))
         user = User.verify_reset_token(token)
         if not user:
@@ -116,15 +131,3 @@ def register_user_routes(app):
             flash('Your password has been reset', 'success')
             return redirect(url_for('login'))
         return render_template('reset_password.html', form=form, token=token)
-
-    def send_async_email(app, msg):
-        with app.app_context():
-            mail.send(msg)
-
-    def send_password_reset_email(user):
-        token = user.generate_reset_token()
-        msg = Message('Reset Your Password',
-                      sender=app.config['MAIL_USERNAME'],
-                      recipients=[user.email])
-        msg.html = render_template('password_reset_email.html', token=token, username=user.username)
-        Thread(target=send_async_email, args=(current_app._get_current_object(), msg)).start()

@@ -5,6 +5,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'ltUN7a9JZcrzQWFmKtU_QA')
+    SECURITY_PASSWORD_SALT = os.environ.get('SECURITY_PASSWORD_SALT', 'P+bAN55/87EJ59Y3jS6r+Rnhy6lAxol1yo/hB0GeHfw=')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, '../instance/test.db')
     REMEMBER_COOKIE_DURATION = timedelta(days=7)
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.example.com')

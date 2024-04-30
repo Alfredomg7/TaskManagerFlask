@@ -8,6 +8,8 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(30), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password_hash = db.Column(db.String(150), nullable=False)
+    email_verified = db.Column(db.Boolean, default=False)
+    email_token = db.Column(db.String(150))
     todos = db.relationship('Todo', backref='user', lazy=True)
 
     def __repr__(self):
@@ -23,6 +25,20 @@ class User(UserMixin, db.Model):
     def email_exists(email):
         return User.query.filter_by(email=email).first() is not None
     
+    def generate_confirmation_token(self):
+        s = Serializer(app.config['SECRET_KEY'], salt=app.config['SECURITY_PASSWORD_SALT'])
+        return s.dumps(self.email)
+
+    @staticmethod
+    def verify_confirmation_token(token, expiration=3600):
+        s = Serializer(app.config['SECRET_KEY'], salt=app.config['SECURITY_PASSWORD_SALT'])
+        try:
+            email = s.loads(token, max_age=expiration)
+            if email:
+                return User.query.filter_by(email=email).first()
+        except:
+            return None    
+
     def generate_reset_token(self):
         s = Serializer(app.config['SECRET_KEY'])
         token = s.dumps({'user_id': str(self.id)})
@@ -37,3 +53,4 @@ class User(UserMixin, db.Model):
             return User.query.get(user_id)
         except:
             return None
+        
