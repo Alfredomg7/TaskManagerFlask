@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>{{ title }}</title>
+<title>Task Manager - {{ title }}</title>
 {% endblock %}
 
 {% block body %}
 <div class="container mt-5">
     {% if tasks|length < 1 %}
-    <h2 class="text-center mb-3">There are no {{ 'tasks' if title == 'All Tasks' else title.lower() }}</h2>
+    <h2 class="text-center mb-3">There are no {{ title.lower() }}</h2>
     <div class="text-center">
         <a class="btn" href="{{ url_for('add') }}">Add New Task</a>
     </div>

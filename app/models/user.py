@@ -1,7 +1,8 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from itsdangerous import URLSafeTimedSerializer as Serializer
-from app import app, db
+from flask import current_app
+from app import db
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,12 +27,12 @@ class User(UserMixin, db.Model):
         return User.query.filter_by(email=email).first() is not None
     
     def generate_confirmation_token(self):
-        s = Serializer(app.config['SECRET_KEY'], salt=app.config['SECURITY_PASSWORD_SALT'])
+        s = Serializer(current_app.config['SECRET_KEY'], salt=current_app.config['SECURITY_PASSWORD_SALT'])
         return s.dumps(self.email)
 
     @staticmethod
     def verify_confirmation_token(token, expiration=3600):
-        s = Serializer(app.config['SECRET_KEY'], salt=app.config['SECURITY_PASSWORD_SALT'])
+        s = Serializer(current_app.config['SECRET_KEY'], salt=current_app.config['SECURITY_PASSWORD_SALT'])
         try:
             email = s.loads(token, max_age=expiration)
             if email:
@@ -40,13 +41,13 @@ class User(UserMixin, db.Model):
             return None    
 
     def generate_reset_token(self):
-        s = Serializer(app.config['SECRET_KEY'])
+        s = Serializer(current_app.config['SECRET_KEY'])
         token = s.dumps({'user_id': str(self.id)})
         return token
 
     @staticmethod
     def verify_reset_token(token, expiration=600):
-        s = Serializer(app.config['SECRET_KEY'])
+        s = Serializer(current_app.config['SECRET_KEY'])
         try:
             data = s.loads(token, max_age=expiration)
             user_id = data.get('user_id')

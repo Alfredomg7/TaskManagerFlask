@@ -16,7 +16,7 @@ def register_index_routes(app):
     def tasks():
         form = CompleteForm()
         tasks = Todo.query.filter_by(user_id=current_user.id).order_by(Todo.date_created).all()
-        return render_template('tasks.html', tasks=tasks, form=form, title='Task Manager - All Tasks')
+        return render_template('tasks.html', tasks=tasks, form=form, title='All Tasks')
     
     @app.route('/tasks/pending')
     @login_required
@@ -32,15 +32,13 @@ def register_index_routes(app):
             tasks = Todo.query.filter_by(user_id=current_user.id, completed=False).filter(Todo.due_date > today).order_by(Todo.date_created).all()
         else:
             tasks = Todo.query.filter_by(user_id=current_user.id, completed=False).order_by(Todo.date_created).all() 
-        return render_template('tasks.html', tasks=tasks, form=form, title="Task Manager - Pending Tasks", filter_type=filter_type)
+        return render_template('tasks.html', tasks=tasks, form=form, title="Pending Tasks", filter_type=filter_type)
     
     @app.route('/tasks/completed')
     def completed():
         form = CompleteForm()
-        today = datetime.today().date()
-        tasks = Todo.query.filter_by(user_id=current_user.id, completed=False).order_by(Todo.date_created).all()
-
-        return render_template('tasks.html', tasks=tasks, form=form, title="Task Manager - Completed Tasks")
+        tasks = Todo.query.filter_by(user_id=current_user.id, completed=True).order_by(Todo.date_created).all()
+        return render_template('tasks.html', tasks=tasks, form=form, title="Completed Tasks")
     
     @app.route('/about')
     def about():
