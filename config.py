@@ -14,3 +14,15 @@ class Config:
     MAIL_USE_SSL = os.environ.get('MAIL_USE_SSL') is None
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME', 'your-email@example.com')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', 'your_password')
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    WTF_CSRF_ENABLED = False
+    PROPAGATE_EXCEPTIONS = False
+
+class ProductionConfig(Config):
+    DEBUG = False

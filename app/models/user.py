@@ -51,7 +51,7 @@ class User(UserMixin, db.Model):
         try:
             data = s.loads(token, max_age=expiration)
             user_id = data.get('user_id')
-            return User.query.get(user_id)
+            return db.session.get(User, user_id)
         except:
             return None
         

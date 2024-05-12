@@ -1,8 +1,6 @@
 from flask import current_app, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash
-from flask_mail import Message
-from threading import Thread
 from datetime import datetime
 from app import db, mail
 from app.models import User, Todo
