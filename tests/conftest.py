@@ -38,6 +38,7 @@ def session(app):
 def add_user(session):
     user = User(username='testuser', email='test@example.com')
     user.set_password('TestPassword')
+    user.email_verified = True
     session.add(user)
     session.commit()
     yield user

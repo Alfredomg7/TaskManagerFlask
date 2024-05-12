@@ -86,6 +86,7 @@ def test_confirm_email_valid_token(client, session, add_user):
     Test the email confirmation process with a valid token.
     Ensures that the user's email is verified and a confirmation message is displayed.
     """
+    add_user.email_verified = False
     token = add_user.generate_confirmation_token()
     response = client.get(url_for('confirm_email', token=token), follow_redirects=True)
     session.refresh(add_user)

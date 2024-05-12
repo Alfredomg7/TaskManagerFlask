@@ -49,10 +49,14 @@ def register_user_routes(app):
         if form.validate_on_submit():
             user = User.query.filter_by(username=form.username.data).first()
             if user and user.check_password(form.password.data):
-                login_user(user, remember=form.remember_me.data)
-                flash('Logged in succesfully!', 'success')
-                next_page = request.args.get('next')
-                return redirect(next_page or url_for('home'))
+                if user.email_verified:
+                    login_user(user, remember=form.remember_me.data)
+                    flash('Logged in succesfully!', 'success')
+                    next_page = request.args.get('next')
+                    return redirect(next_page or url_for('home'))
+                else:
+                    flash('Please confirm your email before loggin in.', 'error')
+                    return redirect(url_for('login'))
             flash('Invalid username or password', 'error')
         return render_template("login.html", form=form)
     
